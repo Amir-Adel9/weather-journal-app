@@ -3,7 +3,7 @@ const baseURL = 'https://api.openweathermap.org/data/2.5/weather?'
 const API_KEY = '&appid=339706ad2f2c34c3e0ac172484e163b8&units=imperial';
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+let newDate = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 // Intializing Selectors
 const zipSelector = document.getElementById('zip');
 const feelingSelector = document.getElementById('feelings');
@@ -27,7 +27,6 @@ const getWeather = async (baseURL, zipcode, key,) => {
     const response = await fetch(baseURL+ zipcode + key)
     try {
         const data = await response.json();
-        console.log(data)
         return data;
       }  catch(error) {
         console.log("error", error);
@@ -36,7 +35,6 @@ const getWeather = async (baseURL, zipcode, key,) => {
 };
 // Intializing postWeather function
 const postWeather = async (url, data= {})=> {
-    console.log(data)
     const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         credentials: 'same-origin', 
@@ -47,7 +45,7 @@ const postWeather = async (url, data= {})=> {
       });
     try {
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         return data;
       }  catch(error) {
         console.log("error", error);
@@ -56,14 +54,18 @@ const postWeather = async (url, data= {})=> {
 };
 // Intializing updateUI function
 const updateUI = async ()=> {
-    const request = await fetch('/all')
-    try {
-        const allData = await request.json()
-        console.log(allData)
-        tempHolder.innerHTML = Math.round(allData[0].temp) + ' degrees'
-        feelingsHolder.innerHTML = allData[0].feeling
-        dateHolder.innerHTML = allData[0].date
-    } catch(error) {
-        console.log('error', error)
-    }
+    const request = await fetch('/all');
+ try {
+ // Transform into JSON
+ const allData = await request.json()
+ console.log(allData);
+ // Write updated data to DOM elements
+ document.getElementById('temp').innerHTML = Math.round(allData.temp)+ ' degrees';
+ document.getElementById('content').innerHTML = allData.feeling;
+ document.getElementById('date').innerHTML =allData.date;
+ }
+ catch(error) {
+   console.log('error', error);
+   // appropriately handle the error
+ }
 }
