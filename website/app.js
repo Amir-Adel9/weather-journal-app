@@ -18,8 +18,9 @@ buttonSelector.addEventListener('click', () => {
     .then((response)=>{
         postWeather('/all', {date: newDate, temp: response.main.temp, feeling: feelingSelector.value})
     })
-    .then(
-        updateUI()
+    .then(()=>{
+      updateUI();
+    } 
     )
 });
 // Intializing getWeather function
